@@ -1,0 +1,317 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    overscroll-behavior: none;
+  }
+
+  body {
+    @apply font-body text-carwash-text antialiased;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+    background: radial-gradient(ellipse 80% 60% at 50% 20%, #0a1628 0%, #030712 50%, #00050a 100%);
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: rgba(14, 165, 233, 0.4);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(56, 189, 248, 0.9);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-drift,
+  .animate-spin,
+  .animate-slide-up,
+  .animate-fade-in {
+    animation: none !important;
+  }
+}
+
+@layer components {
+  /* Gradient text - water theme */
+  .text-gradient-water {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      100deg,
+      #0ea5e9 0%,
+      #38bdf8 25%,
+      #06b6d4 50%,
+      #22d3ee 75%,
+      #0ea5e9 100%
+    );
+    background-size: 200% auto;
+    animation: gradientFlow 7s linear infinite;
+  }
+
+  @keyframes gradientFlow {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+
+  /* Primary button - water flow */
+  .btn-water {
+    background-image: linear-gradient(
+      115deg,
+      #0369a1,
+      #0ea5e9,
+      #38bdf8,
+      #06b6d4,
+      #22d3ee,
+      #0369a1
+    );
+    background-size: 300% 100%;
+    animation: waterFlow 5s linear infinite;
+    box-shadow: 0 0 22px rgba(14, 165, 233, 0.3);
+    @apply text-white font-semibold px-8 py-4 rounded-forge-sm transition-all duration-300;
+  }
+
+  .btn-water:hover {
+    animation-duration: 1.6s;
+    box-shadow: 0 0 32px rgba(34, 211, 238, 0.5), 0 0 60px rgba(14, 165, 233, 0.3);
+    transform: translateY(-2px);
+  }
+
+  @keyframes waterFlow {
+    to { background-position: 300% center; }
+  }
+
+  /* Glass button with water border */
+  .glass-water {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    background: rgba(3, 7, 18, 0.5);
+    backdrop-filter: blur(20px);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-water::before {
+    content: '';
+    position: absolute;
+    inset: -60%;
+    z-index: -1;
+    background: conic-gradient(
+      from 0deg,
+      #0369a1,
+      #0ea5e9,
+      #38bdf8,
+      #06b6d4,
+      #22d3ee,
+      #a855f7,
+      #0369a1,
+      #0369a1
+    );
+    animation: waterSpin 8s linear infinite;
+    filter: blur(18px);
+    opacity: 0.4;
+  }
+
+  .glass-water:hover::before {
+    opacity: 0.8;
+    animation-duration: 3s;
+  }
+
+  .glass-water::after {
+    content: '';
+    position: absolute;
+    inset: 1px;
+    border-radius: inherit;
+    z-index: -1;
+    background: rgba(0, 5, 10, 0.85);
+  }
+
+  @keyframes waterSpin {
+    to { transform: rotate(1turn); }
+  }
+
+  /* Standard glass card */
+  .glass {
+    @apply border border-white/10 bg-white/[0.03];
+    backdrop-filter: blur(10px);
+  }
+
+  /* Water glass card — премиальное "мокрое стекло" с бликом и френелем */
+  .glass-water-card {
+    position: relative;
+    isolation: isolate;
+    border: 1px solid rgba(148, 197, 255, 0.14);
+    background:
+      linear-gradient(115deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 30%),
+      radial-gradient(130% 90% at 12% 0%, rgba(56, 189, 248, 0.10) 0%, transparent 55%),
+      linear-gradient(155deg, rgba(255, 255, 255, 0.07) 0%, rgba(10, 22, 40, 0.34) 100%);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.16) inset,
+      0 -1px 0 0 rgba(0, 0, 0, 0.35) inset,
+      0 18px 42px -22px rgba(0, 0, 0, 0.75);
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+  }
+
+  .glass-water-card:hover {
+    border-color: rgba(56, 189, 248, 0.55);
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.24) inset,
+      0 0 32px rgba(56, 189, 248, 0.22),
+      0 26px 54px -26px rgba(0, 0, 0, 0.85);
+    transform: translateY(-6px);
+  }
+
+  /* Стеклянная кромка-подсветка (для крупных панелей) */
+  .glass-edge {
+    box-shadow:
+      0 1px 0 0 rgba(255, 255, 255, 0.14) inset,
+      0 0 0 1px rgba(56, 189, 248, 0.10),
+      0 0 40px -12px rgba(56, 189, 248, 0.25);
+  }
+
+  /* Custom cursor */
+  .custom-cursor {
+    @apply pointer-events-none fixed inset-0 z-[100];
+  }
+
+  .custom-cursor__dot {
+    @apply pointer-events-none fixed left-0 top-0 z-[9998] h-2 w-2 rounded-full bg-carwash-accentLight;
+    opacity: 0;
+    box-shadow: 0 0 10px rgba(56, 189, 248, 0.95), 0 0 22px rgba(14, 165, 233, 0.55);
+    transition: opacity 0.25s ease;
+    will-change: transform;
+  }
+
+  .custom-cursor__ring {
+    @apply pointer-events-none fixed left-0 top-0 z-[9999] h-10 w-10 rounded-full border;
+    opacity: 0;
+    border-color: rgba(56, 189, 248, 0.55);
+    transition: opacity 0.25s ease, border-color 0.25s ease, background-color 0.25s ease, box-shadow 0.25s ease;
+    will-change: transform;
+  }
+
+  .custom-cursor__ring.active {
+    border-color: #7dd3fc;
+    background: rgba(56, 189, 248, 0.14);
+    box-shadow: 0 0 26px rgba(56, 189, 248, 0.45), inset 0 0 18px rgba(56, 189, 248, 0.25);
+  }
+}
+
+@media (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
+}
+
+@media (pointer: fine) {
+  html, body, a, button, input, textarea, [data-magnetic] {
+    cursor: none;
+  }
+}
+
+/* ===== NEXA Core — WebGL фон (стеклянное поле + частицы) ===== */
+.nexa-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.nexa-bg__layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.nexa-bg__layer--glass {
+  z-index: 1;
+  opacity: 0.92;
+}
+
+.nexa-bg__layer--dust {
+  z-index: 2;
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+/* Water droplet decorative elements */
+.water-drop {
+  position: absolute;
+  border-radius: 50% 50% 50% 0;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.3), rgba(56, 189, 248, 0.1));
+  transform: rotate(-45deg);
+  pointer-events: none;
+}
+
+.water-drop::before {
+  content: '';
+  position: absolute;
+  inset: 10%;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.4), transparent);
+}
+
+/* Foam bubble */
+.foam-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(240, 253, 244, 0.6), rgba(220, 252, 231, 0.1) 60%, transparent 80%);
+  pointer-events: none;
+  animation: foamRise 8s ease-in-out infinite;
+}
+
+@keyframes foamRise {
+  0% { transform: translateY(0) scale(0.3); opacity: 0; }
+  10% { opacity: 0.6; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-120vh) scale(1); opacity: 0; }
+}
+
+/* Page aura glow */
+.page-aura {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 35vw;
+  z-index: 1;
+  will-change: auto;
+}
+
+.page-aura--left {
+  left: 0;
+  background: radial-gradient(ellipse 60% 50% at 0% 40%, rgba(14, 165, 233, 0.12) 0%, rgba(56, 189, 248, 0.05) 40%, transparent 70%);
+}
+
+.page-aura--right {
+  right: 0;
+  background: radial-gradient(ellipse 60% 50% at 100% 60%, rgba(6, 182, 212, 0.1) 0%, rgba(34, 211, 238, 0.04) 40%, transparent 70%);
+}
+
+@media (max-width: 768px) {
+  .page-aura { width: 20vw; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #030712; }
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, #0ea5e9, #06b6d4); 
+  border-radius: 4px; 
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #38bdf8, #22d3ee); }
+
+/* Magnetic elements */
+[data-magnetic] {
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
